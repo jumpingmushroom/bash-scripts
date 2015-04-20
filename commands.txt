@@ -1,0 +1,3 @@
+
+Ping all hosts in an array and post each line with timestamp:
+while true; do for i in www.vg.no www.sunet.se ; do ping -v -c 5 $i | perl -nle 'print scalar(localtime), ": ", $_' && sleep 5; done; done
