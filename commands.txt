@@ -1,3 +1,27 @@
 
-Ping all hosts in an array and post each line with timestamp:
+# Ping all hosts in an array and post each line with timestamp:
 while true; do for i in www.vg.no www.sunet.se ; do ping -v -c 5 $i | perl -nle 'print scalar(localtime), ": ", $_' && sleep 5; done; done
+
+# parse list of cpanel accounts and generate string for /scripts/createacct
+for i in `cat accounts.txt`; do echo $i.dittdomene.no $i $(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1) ; done > /root/createaccounts.txt
+
+# Parse list and remove . at end + paste in the format 'word',
+for i in `cat uniweb2004-domainlist.txt| sed 's/.\{1\}$//'`; do echo "'"$i"'",; done >
+
+# List all smtp connections, scripts and their owners on a webserver.
+lsof -i | grep smtp
+
+# Set up ssh tunnel with socks4
+ssh -D 8888 my.server.com
+
+# Search for executable files in $PWD
+find . -executable -type f
+
+# Dump ratelimit database from exim
+exim_dumpdb /var/spool/exim4 ratelimit
+
+# Dump netflow info
+nfdump -R /var/log/netflow/2014/01/ -A srcip -s record/flows -t '2014/01/20-2014/01/20' "src ip 195.204.82.1"
+
+# Drop all connections outgoing to port 25 except for to localhost on debian
+iptables -A OUTPUT -p tcp \! -d 127.0/8 --dport 25 -m owner \! --uid-owner Debian-exim -j REJECT
